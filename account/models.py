@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from src import model_choices as mch
 
+
 class User(AbstractUser):
     pass
 
@@ -15,3 +16,10 @@ class Rate(models.Model):
 
     def __str__(self):
         return f'{self.created}{self.get_currency_display()}{self.sale}{self.buy}'
+
+
+class Contact(models.Model):
+    email = models.EmailField()
+    title = models.CharField(max_length=150)
+    text = models.TextField()
+    created = models.DateTimeField(auto_now_add=True)

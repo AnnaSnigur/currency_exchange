@@ -7,4 +7,5 @@ app_name = 'account'
 urlpatterns = [
     path('smoke/', views.smoke, name='smoke'),
     path('signup/', views.SignUp.as_view(), name='signup'),
+    path('contact/', views.Contact.as_view(), name='contact'),
 ]
