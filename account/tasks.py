@@ -1,5 +1,5 @@
-from celery import shared_task
-
+from django.core.mail import send_mail
+from django.conf import settings
 from decimal import Decimal
 import requests
 from celery import shared_task
@@ -101,3 +101,9 @@ def parse_rates():
 def debug_task(self):
     print('Request: {0!r}'.format(self.request))
 
+
+def send_email(title, text, email_from):
+    recipient_list = [settings.EMAIL_HOST_USER]
+    send_mail(title, text,
+              email_from, recipient_list,
+              fail_silently=False)
