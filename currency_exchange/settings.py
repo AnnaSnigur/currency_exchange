@@ -1,7 +1,6 @@
 import os
 
 from celery.schedules import crontab
-from django.urls import reverse_lazy
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -31,6 +30,7 @@ INSTALLED_APPS = [
     'django_extensions',
 
     'account',
+    'currency',
 ]
 
 MIDDLEWARE = [
@@ -142,10 +142,10 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
-AUTH_USER_MODEL = 'account.User'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, "..", "static_content", "media")
 
-LOGIN_REDIRECT_URL = reverse_lazy('index')
-LOGOUT_REDIRECT_URL = reverse_lazy('index')
+AUTH_USER_MODEL = 'account.User'
 
 CELERY_BEAT_SCHEDULE = {
     'parse-rates': {
