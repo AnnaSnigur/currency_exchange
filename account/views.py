@@ -1,17 +1,26 @@
 from django.http import HttpResponse
-from django.shortcuts import render
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.views import generic
-from django.views.generic.edit import CreateView
-from account.models import Contact
+from account.models import Contact, User
 from django.conf import settings
 from account.tasks import send_email
-
+from django.views.generic import UpdateView, CreateView, View
 
 
 def smoke(request):
     return HttpResponse('smoke')
+
+
+class MyProfile(UpdateView):
+    template_name = 'my_profile.html'
+    queryset = User.objects.filter(is_active=True)
+    fields = ('email',)
+    success_url = reverse_lazy('index')
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.filter(id=self.request.user.id)
 
 
 class SignUp(generic.CreateView):
@@ -23,7 +32,7 @@ class SignUp(generic.CreateView):
 class Contact(CreateView):
     template_name = 'contact.html'
     queryset = Contact.objects.all()
-    fields = ('email', 'title', 'text', )
+    fields = ('email', 'title', 'text',)
     success_url = reverse_lazy('index')
 
     def form_valid(self, form):
