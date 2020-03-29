@@ -16,6 +16,13 @@ def avatar_path(instance, filename: str) -> str:
 class User(AbstractUser):
     avatar = models.ImageField(upload_to=avatar_path, null=True, blank=True, default=None)
 
+    def save(self, *args, **kwargs):
+        if self.pk is not None:
+            old_self = User.objects.get(pk=self.pk)
+            if old_self.avatar and self.avatar != old_self.avatar:
+                old_self.avatar.delete(False)
+        return super(User, self).save(*args, **kwargs)
+
 
 class Rate(models.Model):
     currency = models.PositiveIntegerField(choices=mch.CURRENCY_CHOICES)
