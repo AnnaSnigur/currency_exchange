@@ -5,6 +5,7 @@ import requests
 from celery import shared_task
 from currency.models import Rate
 from currency import model_choices as mch
+from django.urls import reverse
 
 
 def save(source, rate_kwargs):
@@ -12,7 +13,7 @@ def save(source, rate_kwargs):
     last_rate = Rate.objects.filter(
         currency=rate_kwargs['currency'],
         source=source,
-        ).last()
+    ).last()
     if last_rate is None or (new_rate.buy != last_rate.buy or new_rate.sale != last_rate.sale):
         new_rate.save()
 
@@ -91,10 +92,10 @@ def nbu():
 
 @shared_task()
 def parse_rates():
-  privat()
-  mono()
-  vkurse()
-  nbu()
+    privat()
+    mono()
+    vkurse()
+    nbu()
 
 
 @shared_task(bind=True)
@@ -107,3 +108,21 @@ def send_email(title, text, email_from):
     send_mail(title, text,
               email_from, recipient_list,
               fail_silently=False)
+
+
+@shared_task()
+def send_activation_code_async(email_to, code):
+    path = reverse('account:activate', args=(code,))
+
+    send_mail(
+        'Your activation code',
+        f'http://127.0.0.1:8001{path}',
+        'python.it.ua@gmail.com',
+        [email_to],
+        fail_silently=False,
+    )
+
+
+@shared_task()
+def send_sms_code(phone, code):
+    print(phone, code)

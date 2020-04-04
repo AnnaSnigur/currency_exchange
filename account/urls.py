@@ -8,4 +8,6 @@ urlpatterns = [
     path('smoke/', views.smoke, name='smoke'),
     path('signup/', views.SignUp.as_view(), name='signup'),
     path('contact/', views.Contact.as_view(), name='contact'),
+    path('signup/', views.SignUpView.as_view(), name='signup'),
+    path('activate/', views.Activate.as_view(), name='activate'),
 ]

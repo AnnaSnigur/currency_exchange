@@ -4,7 +4,9 @@ from account.models import User
 
 
 class UserAdmin(admin.ModelAdmin):
-    pass
+    fields = ['email', 'username', 'phone',  'is_active', 'avatar']
 
 
 admin.site.register(User, UserAdmin)
+
+
