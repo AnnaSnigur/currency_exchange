@@ -126,3 +126,8 @@ def send_activation_code_async(email_to, code):
 @shared_task()
 def send_sms_code(phone, code):
     print(phone, code)
+
+
+@shared_task
+def send_email_async(subject, message, email_from, recipient_list):
+    send_mail(subject, message, email_from, recipient_list)
