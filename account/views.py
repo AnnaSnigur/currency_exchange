@@ -82,3 +82,10 @@ class Activate(FormView):
         user.is_active = True
         user.save(update_fields=['is_active'])
         return redirect('index')
+
+
+class Index(CreateView):
+    template_name = 'index.html'
+    queryset = Contact.objects.all()
+    fields = ('email', 'title', 'text')
+
