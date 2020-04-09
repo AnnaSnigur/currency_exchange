@@ -3,11 +3,14 @@ from django.views import generic
 from django.conf import settings
 from account.tasks import send_email
 from django.http import HttpResponse, Http404
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
-from django.views.generic import UpdateView, CreateView, View, FormView
+from django.views.generic import UpdateView, CreateView, FormView
 from account.forms import SignUpForm, ActivateForm
-from account.models import User, Contact, ActivationCode, SmsCode
+from account.models import User, Contact, ActivationCode, SmsCode, Rate
+from django_filters.views import FilterView
+from account.filter import RateFilter
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 def smoke(request):
@@ -88,4 +91,22 @@ class Index(CreateView):
     template_name = 'index.html'
     queryset = Contact.objects.all()
     fields = ('email', 'title', 'text')
+
+
+class RatesList(LoginRequiredMixin, FilterView):
+    filterset_class = RateFilter
+    queryset = Rate.objects.all()
+    template_name = 'rate.html'
+    paginate_by = 10
+
+    def get_context_data(self, *args, **kwargs):
+        from urllib.parse import urlencode
+        context = super().get_context_data(*args, **kwargs)
+
+        query_params = dict(self.request.GET.items())
+        if 'page' in query_params:
+            del query_params['page']
+        context['query_params'] = urlencode(query_params)
+
+        return context
 

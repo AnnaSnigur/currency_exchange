@@ -1,5 +1,5 @@
 {% load static %}
-
+{% load compress %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,7 +11,7 @@
   <meta name="author" content="">
 
   <title>{% block title %} {% endblock title%}</title>
-
+  {% compress css %}
   <!-- Bootstrap core CSS -->
   <link href="{% static 'ln/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
 
@@ -22,7 +22,7 @@
 
   <!-- Custom styles for this template -->
   <link href="{% static 'ln/css/resume.min.css' %}" rel="stylesheet">
-
+ {% endcompress %}
 </head>
 
 <body>
@@ -91,6 +91,7 @@
   </div>
 
   <!-- Bootstrap core JavaScript -->
+  {% compress js %}
   <script src="{% static 'ln/vendor/jquery/jquery.min.js' %}"></script>
   <script src="{% static 'ln/vendor/bootstrap/js/bootstrap.bundle.min.j' %}'"></script>
 
@@ -99,7 +100,7 @@
 
   <!-- Custom scripts for this template -->
   <script src="{% static 'ln/js/resume.min.js' %}"></script>
-
+{% endcompress %}
 </body>
 
 </html>

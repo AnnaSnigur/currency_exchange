@@ -1,12 +1,17 @@
 from rest_framework import generics
-
 from account.api.serializers import RateSerializer, ContactSerializer
 from account.models import Rate, Contact
+from rest_framework.pagination import PageNumberPagination, LimitOffsetPagination
+from account.models import Rate
+from account.api.filter import RateFilter
+from account.api.serializers import RateSerializer
 
 
 class RatesView(generics.ListCreateAPIView):
     queryset = Rate.objects.all()
     serializer_class = RateSerializer
+    filterset_class = RateFilter
+    pagination_class = PageNumberPagination
 
 
 class RateView(generics.RetrieveUpdateDestroyAPIView):

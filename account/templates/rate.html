@@ -4,6 +4,13 @@
 
 {% block content %}
 
+    <form method="get">
+        {{ filter.form.as_p }}
+        <button type="submit" class="btn btn-primary">
+            <span class="glyphicon glyphicon-search"></span> Search
+        </button>
+    </form>
+
 <div>
     <table class="table">
         <thead>
@@ -14,12 +21,14 @@
                 <th>Source</th>
             </tr>
         </thead>
-        {% for rate in rates %}
+        {% for obj in object_list %}
             <tr>
-                <td>{{ rate.get_currency_display }}</td>
-                <td>{{ rate.buy }}</td>
-                <td>{{ rate.sale }}</td>
-                <td>{{ rate.get_source_display }}</td>
+                <td>{{ obj.id }}</td>
+                <td>{{ obj.created }}</td>
+                <td>{{ obj.get_currency_display }}</td>
+                <td>{{ obj.buy }}</td>
+                <td>{{ obj.sale }}</td>
+                <td>{{ obj.get_source_display }}</td>
             </tr>
         {% endfor %}
     </table>
